@@ -11,6 +11,8 @@ If you re-use parts of this code, a mention would be appreciated.
 - Asynchronous fetch requests using Fetch API
 - Background Sync using workbox to manage requests made while offline
 - Structured functions for offline usage
+- Adding restaurants reviews feature
+- Set a restaurant as favorite feature
 
 
 # Local Development API Server
