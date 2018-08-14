@@ -84,6 +84,10 @@ nav h1 a {
 
 }
 
+#breadcrumb li:last-child{
+  font-weight: bold;
+}
+
 /* Add a slash symbol (/) before/behind each list item */
 #breadcrumb li+li:before {
     padding: 8px;
@@ -367,6 +371,8 @@ nav {
 		 flex-basis: calc(100% -30px);
 		 box-sizing: border-box;
 		 min-height: 250px;
+     margin-left: auto;
+     margin-right: auto;
 		 }
 
 
@@ -428,6 +434,10 @@ nav {
   justify-content: space-between;
 		
 	}
+
+  #nameReview,#commentsReview,#ratingReview {
+    border-radius: 5px;
+  }
 
 
 /*Custom checkbox for favorite restaurants got from http://www.csscheckbox.com/ */

@@ -59,8 +59,28 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
+
+<script  type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad"></script>
+
+
+<script>
+  //Lazy loading
+//const el = document.querySelectorAll('img');
+/*const observer = lozad('.lozad', {
+    loaded: function(el) {
+        // Custom implementation on a loaded element
+        el.classList.add('loaded');
+    }
+});*/
+  var observer = lozad();
+  observer.observe();
+
+
+</script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/functions.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLAvroO3Pa4fCcMT-0OFVOzCJFthGD2lE&libraries=places&callback=initMap"></script>
   
 

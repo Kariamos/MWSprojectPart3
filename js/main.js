@@ -88,6 +88,8 @@ window.initMap = () => {
  * Update page and map for current restaurants.
  */
 updateRestaurants = () => {
+  
+
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
@@ -101,10 +103,14 @@ updateRestaurants = () => {
     if (error) { // Got an error!
       console.error(error);
     } else {
+      var observer = lozad();
+      observer.observe();
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
+      observer.observe();
     }
   })
+  
 }
 
 /**
@@ -137,16 +143,23 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
+
+const observer = lozad();
+  
+observer.observe();
+
   const li = document.createElement('li');
 
   const image = document.createElement('img');
   image.setAttribute("tabindex","0");
   image.setAttribute("aria-label","Restaurant image");
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'lozad restaurant-img';
+  //image.src = DBHelper.imageUrlForRestaurant(restaurant);
   const mediumImage = DBHelper.imageUrlForRestaurant(restaurant).replace(".jpg","-medium.jpg");
   const smallImage = DBHelper.imageUrlForRestaurant(restaurant).replace(".jpg","-small.jpg");
-  image.setAttribute("srcset", mediumImage+" 400w,"+DBHelper.imageUrlForRestaurant(restaurant)+" 800w,"+smallImage+" 200w");
+  image.setAttribute("data-src",DBHelper.imageUrlForRestaurant(restaurant));
+  //image.setAttribute("srcset", mediumImage+" 400w,"+DBHelper.imageUrlForRestaurant(restaurant)+" 800w,"+smallImage+" 200w");
+  image.setAttribute("data-srcset", mediumImage+" 400w,"+DBHelper.imageUrlForRestaurant(restaurant)+" 800w,"+smallImage+" 200w");
   image.setAttribute("alt",`Image for the restaurant ${restaurant.name}`);
   
   li.append(image);
@@ -183,7 +196,7 @@ createRestaurantHTML = (restaurant) => {
   favCheckbox.setAttribute("class","css-checkbox");
   favCheckbox.setAttribute("tabindex","0");
   favCheckbox.setAttribute("aria-label","Make a restaurant preferite");
-  favCheckbox.setAttribute("onclick",`checkFavorite(this.value, this); showAlert(this);`);
+  favCheckbox.setAttribute("onclick",`checkFavorite(this.value, this); showAlert(this,"${restaurant.name}");`);
   if(restaurant.is_favorite==="true"){
     favCheckbox.setAttribute("checked","true");
   }
@@ -202,7 +215,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  li.append(more)
+  li.append(more);
 
   return li
  
@@ -249,17 +262,17 @@ function checkFavorite(id, checkbox){
     }
 
 
-function showAlert(checkbox) {
+function showAlert(checkbox, name) {
   var text;
     if(checkbox.checked)
-      text= "Added to favorites";
+      text= name+" added to favorites";
     else
-      text = "Removed from favorites";
+      text = name+" removed from favorites";
 
     var x = document.getElementById("notification");
     x.className = "show";
     x.innerHTML=text;
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2500);
 }
 
 /**

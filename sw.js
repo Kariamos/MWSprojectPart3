@@ -91,29 +91,9 @@ const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
   plugins: [bgSyncPlugin]
 });
 
-/*const addEventRoute = new workbox.routing.Route(
-  ({url}) => url.pathname === 'http://localhost:1337/reviews/',
-  networkWithBackgroundSync,
-  'POST'
-);
-
-const addEventRoute2 = new workbox.routing.Route(
-  ({url}) => url.pathname === 'http://localhost:1337/restaurants/',
-  networkWithBackgroundSync,
-  'POST'
-);*/
 
 workbox.routing.registerRoute(/\/*/, networkWithBackgroundSync, "POST");
 workbox.routing.registerRoute(/\/*/, networkWithBackgroundSync, "PUT");
-
-//workbox.routing.registerRoute(addEventRoute);
-
-
-
-
-
-
-
 
 
 

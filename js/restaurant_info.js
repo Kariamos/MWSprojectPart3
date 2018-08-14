@@ -79,7 +79,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   createReviewsForm();
 
+ if(navigator.onLine){
  getAllReviews();
+}
   // fill reviews
   fillReviewsHTML();
 
@@ -90,9 +92,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
 
 function getAllReviews() {
-  console.log("get all reviews");
-    const port = 1337 // Change this to your server port
-    const url = `http://localhost:${port}/reviews/`;
+ 
+  console.log("get all reviews and save to idb");
+    //const port = 1337 // Change this to your server port
+    console.log("saving all reviews from restaurant number: "+self.restaurant.id);
+    const url = 'http://localhost:1337/reviews/?restaurant_id='+self.restaurant.id;
     fetch(url)
     .then(response =>{
       return response.json();
@@ -103,8 +107,9 @@ function getAllReviews() {
           dbPromise.then(db =>{
              const tx = db.transaction("reviewsOS", "readwrite");
              const reviewsOS = tx.objectStore("reviewsOS");
-             for(var i=0; i<data.length; i++)
-             reviewsOS.put(data[i]);
+             for(var i=0; i<data.length; i++){
+             const v = reviewsOS.put(data[i]);
+           }
           }).catch( err => {console.log(err)});
     });
 }
@@ -163,6 +168,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (id = this.restaurant.id) => {
   if(navigator.onLine){
+    console.log("i'm ONLINE");
   fetch("http://localhost:1337/reviews/?restaurant_id="+id)
   .then(data => {
     return data.json();
@@ -187,14 +193,9 @@ fillReviewsHTML = (id = this.restaurant.id) => {
   container.appendChild(ul);
   });
   }
-  else{
+  else if(!navigator.onLine){
     console.log("I'M OFFLINE");
-    const dbPromise = idb.open('db-project2', 1, (upgradeDB => {
-    if(!upgradeDB.objectStoreNames.contains('reviewsOS'))
-      upgradeDB.createObjectStore("reviewsOS", {keyPath: 'id'});
-
-  })
-  )
+    const dbPromise = idb.open('db-project2', 1);
           dbPromise.then(db =>{
              const tx = db.transaction("reviewsOS", "readonly");
              const reviewsOS = tx.objectStore("reviewsOS");
@@ -214,8 +215,10 @@ fillReviewsHTML = (id = this.restaurant.id) => {
   }
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
-    if(review.restaurant_id==id)
+    if(review.restaurant_id===id){
+      console.log('for restaurant '+this.restaurant.name + "- " +review.restaurant_id===id);
     ul.appendChild(createReviewHTML(review));
+  }
     else
       return;
   });
@@ -236,15 +239,26 @@ createReviewHTML = (review) => {
   const li = document.createElement('li');
   const name = document.createElement('p');
   name.innerHTML = review.name;
+  name.style = "font-size:1.2em;"
   name.setAttribute(`aria-label`,`reviewer name: ${review.name}`);
   name.setAttribute("tabindex","0");
   li.appendChild(name);
 
   const date = document.createElement('p');
   //const dateToShow ="Created at: "+ review.createdAt.getDay() + review.createdAt.getMonth(); + review.createdAt.getYear(); + " " + review.createdAt.getHour(); +':' + review.createdAt.getMinutes();
+  var d = new Date(review.createdAt);
+  var day = d.getDay();
+  var month = d.getMonth();
+  var year = d.getFullYear();
+  var hour = d.getHours();
+  var minutes = d.getMinutes();
+  var seconds = d.getSeconds();
 
-  date.innerHTML = review.createdAt;
-  date.setAttribute(`aria-label`,`review date: ${review.createdAt}`);
+  var months= ["January","February","March","April","May","June","July",
+            "August","September","October","November","December"];
+
+  date.innerHTML = '<i>'+day+'&nbsp;'+months[month]+'&nbsp;'+year+'&nbsp;-&nbsp;'+hour+':'+minutes+':'+seconds+'</i>';
+  date.setAttribute(`aria-label`,`review date: ${date.innerHTML}`);
   date.setAttribute("tabindex","0");
   li.appendChild(date);
 
@@ -255,10 +269,10 @@ createReviewHTML = (review) => {
  
 	const stars = document.createElement('p');
    const starsNumber = parseInt(review.rating);
-   stars.innerHTML = '<i style="font-size:12px;">Rating:</i> ';
+   stars.innerHTML = '<i style="font-size:1.1em;"> </i> ';
    if(starsNumber!=0){
    for (var i=0; i<starsNumber; i++){
-	   temp = '<i class="fa fa-star-o"></i>';
+	   temp = '<i class="fa fa-star" style="font-size:1.5em; color:#FFFF33;"></i>';
 	stars.innerHTML+=temp;
     }
 	stars.setAttribute(`aria-label`,`rating: ${review.rating}`);

@@ -33,12 +33,15 @@ class DBHelper {
              for(var i=0; i<data.length; i++)
              restaurantsOS.put(data[i]);
           }).catch( err => {console.log(err)});
-      return callback(null, data);
-    })
-  }
+
+          return callback(null, data);
+
+        })
+      
+    }
   else{
     const resOffline = [];
-   // console.log("I'm OFFLINE");
+    console.log("I'm OFFLINE");
     const dbPromise = idb.open('db-project2', 1, (upgradeDB => {
     if(!upgradeDB.objectStoreNames.contains('restaurantsOS'))
       upgradeDB.createObjectStore("restaurantsOS", {keyPath: 'id'});

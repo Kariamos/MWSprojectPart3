@@ -1,3 +1,18 @@
+My code for the last stage of the project for the Udacity Mobile Web Specialist Nanodegree.
+If you re-use parts of this code, a mention would be appreciated.
+
+
+## Features added to the basic repository provided by Udacity through all the stages:
+- Responsive design (flexbox, media queries, responsive images)
+- Lazy loading images using Lozad.js
+- WAI-ARIA Accessibility
+- Service worker and caching with workbox
+- IndexedDB for local storage
+- Asynchronous fetch requests using Fetch API
+- Background Sync using workbox to manage requests made while offline
+- Structured functions for offline usage
+
+
 # Local Development API Server
 ## Usage
 #### Get Restaurants

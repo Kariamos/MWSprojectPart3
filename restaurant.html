@@ -68,7 +68,7 @@
     <section tabindex="0" aria-label="comment form" id="form-container" style=" margin:auto;    width: 50%; padding: 0; display: flex; flex-flow: column wrap; margin-bottom: 35%; margin-top: 10%;">
        <h2 style="color:orange; font-weight: 300; font-size: 24px;" id="form-label">Add Review</h2>
       <!--<form method="post" target="none"  action='http://localhost:1337/reviews' style="margin-left:10%; margin-bottom: 50%;" id="commentForm">-->
-      <h4>Name:</h4> <input tabindex="0" aria-label="name" type="text" id="nameReview" name="name" required></br></br>
+      <h4>Name:</h4> <input tabindex="0" aria-label="name" type="text" id="nameReview" name="name" oninput='checkName(this.value);' onfocus="checkName(this.value);"></br></br>
       <h4>Rating:</h4> <select tabindex="0" aria-label="rating select" id="ratingReview" name="rating">
     <option value="1">1</option>
     <option value="2">2</option>
